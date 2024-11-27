@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <title>Списък с контакти</title>
+</head>
+<body>
+    <h1>Списък с контакти</h1>
+    <ul>
+        {% for contact in contacts %}
+            <li>{{ contact.first_name }} {{ contact.last_name }} - {{ contact.email }}</li>
+        {% empty %}
+            <li>Няма налични контакти.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

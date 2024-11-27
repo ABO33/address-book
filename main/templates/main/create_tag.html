@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Създаване на етикет</title>
+</head>
+<body>
+    <h2>Създаване на нов етикет</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Създай етикет</button>
+    </form>
+</body>
+</html>

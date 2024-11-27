@@ -1,0 +1,7 @@
+<h1>Етикети</h1>
+<ul>
+    {% for tag in tags %}
+        <li style="color: {{ tag.color }}">{{ tag.name }}</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'add_tag' %}">Добави етикет</a>

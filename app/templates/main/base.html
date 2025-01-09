@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Address Book</title>
+
+    <!-- Include TinyMCE script with API key -->
+    <script src="https://cdn.tiny.cloud/1/mpag0c7348lidq29ct5bn7vayslher7zce0lk2xsdybn62tv/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'lists link image table code',
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | outdent indent | link image table | code'
+        });
+    </script>
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<h1>Edit Contact - {{ contact.first_name }} {{ contact.last_name }}</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+
+    <!-- Existing fields for editing the contact -->
+    <div>{{ form.first_name.label }} {{ form.first_name() }}</div>
+    <div>{{ form.last_name.label }} {{ form.last_name() }}</div>
+    <div>{{ form.email.label }} {{ form.email() }}</div>
+    <div>{{ form.phone.label }} {{ form.phone() }}</div>
+    <div>{{ form.mobile.label }} {{ form.mobile() }}</div>
+    <div>{{ form.company_name.label }} {{ form.company_name() }}</div>
+    <div>{{ form.address.label }} {{ form.address() }}</div>
+    <div>{{ form.fax.label }} {{ form.fax() }}</div>
+    <div>{{ form.comment.label }} {{ form.comment() }}</div>
+
+    <!-- Custom Field Section -->
+    <h2>Add/Edit Custom Field</h2>
+    <div>
+        <label for="name">Field Name:</label>
+        <input type="text" name="name" id="name" value="{{ request.form.get('name', '') }}" required><br>
+
+        <label for="value">Field Value:</label>
+        <input type="text" name="value" id="value" value="{{ request.form.get('value', '') }}"><br>
+    </div>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<h3>Existing Custom Fields</h3>
+<ul>
+    {% for field_name, field_value in custom_fields %}
+        <li>
+            <strong>{{ field_name }}:</strong>
+            <form method="POST" style="display: inline;">
+                <input type="text" name="value" value="{{ field_value }}">
+                <input type="hidden" name="name" value="{{ field_name }}">
+                <button type="submit">Update</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

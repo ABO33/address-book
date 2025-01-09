@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>Add/Edit Contact</h1>
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.first_name.label }} {{ form.first_name(size=30) }}<br>
+    {{ form.last_name.label }} {{ form.last_name(size=30) }}<br>
+    {{ form.company_name.label }} {{ form.company_name(size=30) }}<br>
+    {{ form.address.label }} {{ form.address(size=50) }}<br>
+    {{ form.phone.label }} {{ form.phone(size=20) }}<br>
+    {{ form.email.label }} {{ form.email(size=30) }}<br>
+    {{ form.fax.label }} {{ form.fax(size=20) }}<br>
+    {{ form.mobile.label }} {{ form.mobile(size=20) }}<br>
+    {{ form.comment.label }}<br>
+    {{ form.comment }}<br>
+    {{ form.submit() }}
+</form>
+{% endblock %}

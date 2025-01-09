@@ -1,0 +1,5 @@
+To run this application:
+-pip install -r requirments.txt
+-Download PostgreSQL
+-create a localhost database named address_book with username: postgres and password: password
+-run the application

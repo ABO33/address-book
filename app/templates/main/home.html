@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome, {{ user.username }}!</h1>
+    </header>
+
+    <main>
+        <section>
+            <h2>Actions</h2>
+            <div class="button-container">
+                <a href="{{ url_for('main.contacts') }}" class="button">Contacts</a>
+                <a href="{{ url_for('main.import_data') }}" class="button">Import Data</a>
+                <a href="{{ url_for('main.profile') }}">Profile</a>
+                <a href="{{ url_for('auth.logout') }}">Logout</a>
+            </div>
+        </section>
+    </main>
+
+</body>
+</html>

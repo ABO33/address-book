@@ -1,0 +1,14 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>Contact Details</h1>
+<p><strong>Name:</strong> {{ contact.first_name }} {{ contact.last_name }}</p>
+<p><strong>Company:</strong> {{ contact.company_name }}</p>
+<p><strong>Address:</strong> {{ contact.address }}</p>
+<p><strong>Phone:</strong> {{ contact.phone }}</p>
+<p><strong>Email:</strong> {{ contact.email }}</p>
+<p><strong>Fax:</strong> {{ contact.fax }}</p>
+<p><strong>Mobile:</strong> {{ contact.mobile }}</p>
+<p><strong>Comment:</strong> {{ contact.comment }}</p>
+<a href="{{ url_for('main.edit_contact', contact_id=contact.id) }}">Edit Contact</a> |
+<a href="{{ url_for('main.contacts') }}">Back to Contacts</a>
+{% endblock %}

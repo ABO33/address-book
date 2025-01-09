@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% block content %}
+<h1>Your Contacts</h1>
+
+<!-- Navigation Links -->
+<div style="margin-bottom: 20px;">
+    <a href="{{ url_for('main.add_contact') }}"><button>Add New Contact</button></a>
+    <a href="{{ url_for('main.all_contacts') }}"><button>Show All Contacts</button></a>
+    <a href="{{ url_for('main.most_common_tags') }}"><button>Most Common Tags</button></a>
+    <a href="{{ url_for('main.same_firstnames') }}"><button>Same First Names</button></a>
+    <a href="{{ url_for('main.same_lastnames') }}"><button>Same Last Names</button></a>
+    <a href="{{ url_for('main.search_contact') }}"><button>Search by Name</button></a>
+</div>
+
+<!-- Contacts Table -->
+<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if contacts %}
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+                <td>{{ contact.phone }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <a href="{{ url_for('main.view_contact', contact_id=contact.id) }}">View</a> |
+                    <a href="{{ url_for('main.edit_contact', contact_id=contact.id) }}">Edit</a> |
+                    <form action="{{ url_for('main.delete_contact', contact_id=contact.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this contact?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="4" style="text-align: center;">No contacts found.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endblock %}

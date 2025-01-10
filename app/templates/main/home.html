@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
+{% extends "main/base.html" %}
+
+{% block content %}
     <header>
         <h1>Welcome, {{ user.username }}!</h1>
     </header>
@@ -17,11 +11,10 @@
             <div class="button-container">
                 <a href="{{ url_for('main.contacts') }}" class="button">Contacts</a>
                 <a href="{{ url_for('main.import_data') }}" class="button">Import Data</a>
-                <a href="{{ url_for('main.profile') }}">Profile</a>
-                <a href="{{ url_for('auth.logout') }}">Logout</a>
+                <a href="{{ url_for('main.manage_tags') }}" class="button">Manage Tags</a>
+                <a href="{{ url_for('main.profile') }}" class="button">Profile</a>
+                <a href="{{ url_for('auth.logout') }}" class="button">Logout</a>
             </div>
         </section>
     </main>
-
-</body>
-</html>
+{% endblock %}

@@ -1,6 +1,5 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.types import JSON
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -40,17 +39,37 @@ class Contact(db.Model):
     comment = db.Column(db.Text)  # Rich text field
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     custom_fields = db.Column(db.JSON, default={})  # JSON column for custom fields
+    tags = db.relationship('Tag', secondary='contact_tag', backref='contacts', lazy='dynamic')
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    @staticmethod
+    def bulk_create(data, user_id):
+        contacts = []
+        for item in data:
+            contact = Contact(
+                first_name=item.get('first_name'),
+                last_name=item.get('last_name'),
+                company_name=item.get('company_name'),
+                address=item.get('address'),
+                phone=item.get('phone'),
+                email=item.get('email'),
+                fax=item.get('fax'),
+                mobile=item.get('mobile'),
+                comment=item.get('comment'),
+                user_id=user_id
+            )
+            contacts.append(contact)
+        if contacts:
+            db.session.bulk_save_objects(contacts)
+            db.session.commit()
 
 class Tag(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), unique=True, nullable=False)
-    color = db.Column(db.String(20))  # Store color codes like #FF5733
+    color = db.Column(db.String(20))  # Hex color codes like #FF5733
+    parent_id = db.Column(db.Integer, db.ForeignKey('tag.id'), nullable=True)
+    children = db.relationship('Tag', backref=db.backref('parent', remote_side=[id]))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class ContactTag(db.Model):
     contact_id = db.Column(db.Integer, db.ForeignKey('contact.id'), primary_key=True)
     tag_id = db.Column(db.Integer, db.ForeignKey('tag.id'), primary_key=True)
-

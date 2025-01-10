@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+
 {% block content %}
 <h1>Your Contacts</h1>
 
@@ -10,15 +11,17 @@
     <a href="{{ url_for('main.same_firstnames') }}"><button>Same First Names</button></a>
     <a href="{{ url_for('main.same_lastnames') }}"><button>Same Last Names</button></a>
     <a href="{{ url_for('main.search_contact') }}"><button>Search by Name</button></a>
+    <a href="{{ url_for('main.home') }}"><button>Return to home</button></a>
 </div>
 
 <!-- Contacts Table -->
-<table border="1" cellpadding="10" style="width: 100%; border-collapse: collapse;">
+<table>
     <thead>
-        <tr style="background-color: #f2f2f2;">
+        <tr>
             <th>Name</th>
             <th>Phone</th>
             <th>Email</th>
+            <th>Tags</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -30,6 +33,17 @@
                 <td>{{ contact.phone }}</td>
                 <td>{{ contact.email }}</td>
                 <td>
+                    {% if contact.tags %}
+                        {% for tag in contact.tags %}
+                        <span style="background-color: {{ tag.color }};">
+                            {{ tag.name }}
+                        </span>
+                        {% endfor %}
+                    {% else %}
+                        <i>No Tags</i>
+                    {% endif %}
+                </td>
+                <td>
                     <a href="{{ url_for('main.view_contact', contact_id=contact.id) }}">View</a> |
                     <a href="{{ url_for('main.edit_contact', contact_id=contact.id) }}">Edit</a> |
                     <form action="{{ url_for('main.delete_contact', contact_id=contact.id) }}" method="POST" style="display:inline;">
@@ -40,7 +54,7 @@
             {% endfor %}
         {% else %}
             <tr>
-                <td colspan="4" style="text-align: center;">No contacts found.</td>
+                <td colspan="5" style="text-align: center;">No contacts found.</td>
             </tr>
         {% endif %}
     </tbody>

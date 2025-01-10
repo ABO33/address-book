@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Address Book</title>
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
     <!-- Include TinyMCE script with API key -->
     <script src="https://cdn.tiny.cloud/1/mpag0c7348lidq29ct5bn7vayslher7zce0lk2xsdybn62tv/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
@@ -20,3 +23,16 @@
     {% block content %}{% endblock %}
 </body>
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const selects = document.querySelectorAll('select[multiple]');
+        selects.forEach(select => {
+            select.addEventListener('change', function () {
+                const selectedOptions = Array.from(this.selectedOptions);
+                const display = selectedOptions.map(option => option.text).join(', ');
+                this.setAttribute('title', display);
+            });
+        });
+    });
+</script>

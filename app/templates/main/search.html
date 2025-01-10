@@ -1,3 +1,6 @@
+{% extends "main/base.html" %}
+
+{% block content %}
 <h1>Search Contact</h1>
 
 <form method="POST">
@@ -7,5 +10,10 @@
     <label for="last_name">Last Name:</label>
     <input type="text" id="last_name" name="last_name" required>
     <br>
-    <button type="submit">Search</button>
-</form>
+    <div style="margin-top: 20px; display: flex; gap: 10px;">
+    <button type="submit" style="flex: 1; padding: 10px; background-color: #007bff; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Search</button>
+    <a href="{{ url_for('main.contacts') }}" style="flex: 1; text-decoration: none;">
+        <button type="button" style="width: 100%; padding: 10px; background-color: #dc3545; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Return to Contacts</button>
+    </a>
+ </form>
+{% endblock %}

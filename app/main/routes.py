@@ -133,7 +133,7 @@ def view_contact(contact_id):
     contact = Contact.query.get_or_404(contact_id)
     if contact.user_id != current_user.id:
         abort(403)
-    return render_template('main/view_contact.html', contact=contact)
+    return render_template('main/contacts/view_contact.html', contact=contact)
 
 
 @main.route('/edit_contact/<int:contact_id>', methods=['GET', 'POST'])
@@ -177,7 +177,7 @@ def edit_contact(contact_id):
             return redirect(url_for('main.view_contact', contact_id=contact.id))
 
     custom_fields = contact.custom_fields.items() if contact.custom_fields else []
-    return render_template('main/edit_contact.html', form=form, contact=contact, custom_fields=custom_fields, tags=tags)
+    return render_template('main/contacts/edit_contact.html', form=form, contact=contact, custom_fields=custom_fields, tags=tags)
 
 
 @main.route('/delete_contact/<int:contact_id>', methods=['POST'])
@@ -273,38 +273,40 @@ def all_contacts():
     contacts = Contact.query.filter_by(user_id=current_user.id).all()
     return render_template('main/contacts/contacts.html', contacts=contacts)
 
-@main.route('/contacts/most_common_tags', methods=['GET'])
+@main.route('/contacts/most_common_tag', methods=['GET'])
 @login_required
 def most_common_tags():
     from sqlalchemy import func
 
-    # Query for most common tags based on usage in contacts
-    most_common_tags = (
+    # Query for the single most common tag based on usage in contacts
+    most_common_tag = (
         db.session.query(Tag, func.count(ContactTag.contact_id).label('usage_count'))
         .join(ContactTag, ContactTag.tag_id == Tag.id)
         .join(Contact, Contact.id == ContactTag.contact_id)
         .filter(Tag.user_id == current_user.id)
         .group_by(Tag.id)
         .order_by(func.count(ContactTag.contact_id).desc())
-        .limit(10)  # Limit to top 10 most common tags
-        .all()
+        .first()  # Fetch the top result only
     )
 
-    # Extract tag IDs for filtering contacts
-    most_common_tag_ids = [tag.id for tag, _ in most_common_tags]
-
-    # Fetch contacts associated with the most common tags
-    contacts = (
-        Contact.query.join(ContactTag)
-        .filter(ContactTag.tag_id.in_(most_common_tag_ids), Contact.user_id == current_user.id)
-        .all()
-    )
+    if most_common_tag:
+        tag, usage_count = most_common_tag
+        # Fetch contacts associated with the most common tag
+        contacts = (
+            Contact.query.join(ContactTag)
+            .filter(ContactTag.tag_id == tag.id, Contact.user_id == current_user.id)
+            .all()
+        )
+    else:
+        tag = None
+        contacts = []
 
     return render_template(
         'main/contacts/contacts.html',
         contacts=contacts,
-        tags=[tag for tag, _ in most_common_tags]  # Pass only the tags
+        tags=[tag] if tag else []  # Pass only the most common tag, or an empty list if none
     )
+
 
 @main.route('/contacts/same_firstnames', methods=['GET'])
 @login_required
@@ -346,4 +348,4 @@ def search_contact():
         last_name = request.form.get('last_name')
         contact = Contact.query.filter_by(first_name=first_name, last_name=last_name, user_id=current_user.id).first()
         return render_template('main/contacts/contacts.html', contacts=[contact] if contact else [], search=True)
-    return render_template('main/search.html')  # Render a form for the user to enter name and last name
+    return render_template('main/contacts/search.html')  # Render a form for the user to enter name and last name

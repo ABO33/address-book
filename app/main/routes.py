@@ -44,12 +44,19 @@ def add_contact():
             if tag:
                 contact.tags.append(tag)
 
-        db.session.add(contact)
-        db.session.commit()
+        try:
+            db.session.add(contact)
+            db.session.commit()
+            flash('Contact saved successfully!', 'success')
+        except Exception as e:
+            db.session.rollback()
+            print("Error saving contact:", e)
+            flash('Error saving contact. Please try again.', 'danger')
+
         flash('Contact saved successfully!', 'success')
         return redirect(url_for('main.contacts'))
 
-    return render_template('main/add_contact.html', form=form, tags=tags)
+    return render_template('main/contacts/add_contact.html', form=form, tags=tags)
 
 
 @main.route('/tags', methods=['GET', 'POST'])
@@ -110,7 +117,7 @@ def filter_contacts():
         contacts = Contact.query.filter_by(user_id=current_user.id).all()
 
     tags = Tag.query.filter_by(user_id=current_user.id).all()
-    return render_template('main/contacts.html', contacts=contacts, tags=tags)
+    return render_template('main/contacts/contacts.html', contacts=contacts, tags=tags)
 
 
 @main.route('/contacts', methods=['GET'])
@@ -118,7 +125,7 @@ def filter_contacts():
 def contacts():
     user_contacts = Contact.query.filter_by(user_id=current_user.id).all()
     tags = Tag.query.filter_by(user_id=current_user.id).all()
-    return render_template('main/contacts.html', contacts=user_contacts, tags=tags)
+    return render_template('main/contacts/contacts.html', contacts=user_contacts, tags=tags)
 
 @main.route('/view_contact/<int:contact_id>', methods=['GET'])
 @login_required
@@ -264,7 +271,7 @@ def delete_account():
 @login_required
 def all_contacts():
     contacts = Contact.query.filter_by(user_id=current_user.id).all()
-    return render_template('main/contacts.html', contacts=contacts)
+    return render_template('main/contacts/contacts.html', contacts=contacts)
 
 @main.route('/contacts/most_common_tags', methods=['GET'])
 @login_required
@@ -294,7 +301,7 @@ def most_common_tags():
     )
 
     return render_template(
-        'main/contacts.html',
+        'main/contacts/contacts.html',
         contacts=contacts,
         tags=[tag for tag, _ in most_common_tags]  # Pass only the tags
     )
@@ -313,7 +320,7 @@ def same_firstnames():
             Contact.user_id == current_user.id
         )
     ).all()
-    return render_template('main/contacts.html', contacts=contacts)
+    return render_template('main/contacts/contacts.html', contacts=contacts)
 
 @main.route('/contacts/same_lastnames', methods=['GET'])
 @login_required
@@ -329,7 +336,7 @@ def same_lastnames():
             Contact.user_id == current_user.id
         )
     ).all()
-    return render_template('main/contacts.html', contacts=contacts)
+    return render_template('main/contacts/contacts.html', contacts=contacts)
 
 @main.route('/contacts/search', methods=['GET', 'POST'])
 @login_required
@@ -338,5 +345,5 @@ def search_contact():
         first_name = request.form.get('first_name')
         last_name = request.form.get('last_name')
         contact = Contact.query.filter_by(first_name=first_name, last_name=last_name, user_id=current_user.id).first()
-        return render_template('main/contacts.html', contacts=[contact] if contact else [], search=True)
+        return render_template('main/contacts/contacts.html', contacts=[contact] if contact else [], search=True)
     return render_template('main/search.html')  # Render a form for the user to enter name and last name

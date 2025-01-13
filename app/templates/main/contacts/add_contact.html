@@ -1,0 +1,77 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+<main class="bg-light">
+    <div class="container text-center">
+        <h1 class="mb-4">Add New Contact</h1>
+
+        <!-- Form to Add New Contact -->
+        <form method="POST" class="mb-4">
+            {{ form.hidden_tag() }}
+            
+            <div class="mb-3">
+                {{ form.first_name.label(class="form-label") }}
+                {{ form.first_name(class="form-control", size=30) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.last_name.label(class="form-label") }}
+                {{ form.last_name(class="form-control", size=30) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.company_name.label(class="form-label") }}
+                {{ form.company_name(class="form-control", size=30) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.address.label(class="form-label") }}
+                {{ form.address(class="form-control", size=50) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.phone.label(class="form-label") }}
+                {{ form.phone(class="form-control", size=20) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }}
+                {{ form.email(class="form-control", size=30) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.fax.label(class="form-label") }}
+                {{ form.fax(class="form-control", size=20) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.mobile.label(class="form-label") }}
+                {{ form.mobile(class="form-control", size=20) }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.comment.label(class="form-label") }}
+                {{ form.comment(class="form-control", rows=4) }}
+            </div>
+
+            <div class="mb-3">
+                <label for="tags" class="form-label">Tags:</label>
+                <select name="tags" id="tags" class="form-control" multiple>
+                    {% for tag in tags %}
+                    <option value="{{ tag.id }}" style="color: {{ tag.color }}; font-weight: bold;">
+                        ● {{ tag.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Save Contact</button>
+                <a href="{{ url_for('main.contacts') }}">
+                    <button type="button" class="btn btn-secondary btn-lg" style="margin-left: 10px;">Return to Contacts</button>
+                </a>
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}

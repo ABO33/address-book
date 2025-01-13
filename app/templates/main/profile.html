@@ -1,34 +1,40 @@
-<!-- profile.html -->
 {% extends "main/base.html" %}
 
 {% block content %}
-<h1>Edit Profile</h1>
+<main class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="container text-center">
+        <h1 class="mb-4">Edit Profile</h1>
 
-<form method="POST">
-    {{ form.hidden_tag() }}
+        <!-- Profile Edit Form -->
+        <form method="POST" class="mb-4">
+            {{ form.hidden_tag() }}
 
-    <div>
-        {{ form.username.label }} {{ form.username() }}
+            <div class="mb-3">
+                {{ form.username.label(class="form-label") }} 
+                {{ form.username(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label(class="form-label") }} 
+                {{ form.email(class="form-control") }}
+            </div>
+
+            <div class="mb-3">
+                {{ form.password.label(class="form-label") }} 
+                {{ form.password(class="form-control") }}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+        </form>
+
+        <h2 class="mb-4">Delete Your Account</h2>
+        <form action="{{ url_for('main.delete_account') }}" method="POST" class="mb-4">
+            <button type="submit" class="btn btn-danger btn-lg" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
+        </form>
+
+        <div class="mt-4">
+            <a href="{{ url_for('main.home') }}" class="btn btn-secondary btn-lg">Return to Home</a>
+        </div>
     </div>
-
-    <div>
-        {{ form.email.label }} {{ form.email() }}
-    </div>
-
-    <div>
-        {{ form.password.label }} {{ form.password() }}
-    </div>
-
-    <button type="submit">Save Changes</button>
-</form>
-
-<h2>Delete Your Account</h2>
-<form action="{{ url_for('main.delete_account') }}" method="POST">
-    <button type="submit" onclick="return confirm('Are you sure you want to delete your account?')">Delete Account</button>
-</form>
-
-<div style="margin-bottom: 20px;">
-    <a href="{{ url_for('main.home') }}"><button>Return to home</button></a>
-</div>
-
+</main>
 {% endblock %}

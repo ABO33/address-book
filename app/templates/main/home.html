@@ -1,20 +1,18 @@
 {% extends "main/base.html" %}
 
 {% block content %}
-    <header>
-        <h1>Welcome, {{ user.username }}!</h1>
-    </header>
-
-    <main>
-        <section>
-            <h2>Actions</h2>
-            <div class="button-container">
-                <a href="{{ url_for('main.contacts') }}" class="button">Contacts</a>
-                <a href="{{ url_for('main.import_data') }}" class="button">Import Data</a>
-                <a href="{{ url_for('main.manage_tags') }}" class="button">Manage Tags</a>
-                <a href="{{ url_for('main.profile') }}" class="button">Profile</a>
-                <a href="{{ url_for('auth.logout') }}" class="button">Logout</a>
-            </div>
-        </section>
-    </main>
+<main class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="container text-center">
+        <h1 class="mb-4">Welcome, {{ user.username }}!</h1>
+        <div class="d-flex flex-column gap-3">
+            <a href="{{ url_for('main.contacts') }}" class="btn btn-primary btn-lg">Manage Contacts</a>
+            <a href="{{ url_for('main.import_data') }}" class="btn btn-primary btn-lg">Import Data</a>
+            <a href="{{ url_for('main.manage_tags') }}" class="btn btn-primary btn-lg">Manage Tags</a>
+            <a href="{{ url_for('main.profile') }}" class="btn btn-primary btn-lg">View Profile</a>
+        </div>
+        <div class="mt-4">
+            <a href="{{ url_for('auth.logout') }}" class="btn btn-secondary btn-lg">Logout</a>
+        </div>
+    </div>
+</main>
 {% endblock %}

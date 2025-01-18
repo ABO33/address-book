@@ -1,7 +1,6 @@
 from flask import Blueprint, jsonify, request, abort
 from flask_login import login_required, current_user, login_user, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import func, and_
 from app.models import db, Contact, Tag, ContactTag, User
 from app.utils import process_csv, process_json, process_excel
 from sqlalchemy.exc import IntegrityError

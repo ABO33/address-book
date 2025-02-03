@@ -1,3 +1,5 @@
+Simple web interface page that simulate a web address book, has contact page on which you can add, edit and delete contacts and info for them, login and register forms, tags for the contacts, and filters for contacts, edditing of the profile information and import of contacts in csv and json fomrat.
+
 To run this application:
 -pip install -r requirments.txt
 -Download PostgreSQL
